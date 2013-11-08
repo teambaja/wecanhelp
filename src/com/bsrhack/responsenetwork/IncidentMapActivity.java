@@ -45,15 +45,28 @@ public class IncidentMapActivity extends Activity {
 		for(Request request : requests) {
 			if (hasSkill(skills,request.skill)) {
 				// add to map
+				offsetIfNeeded(requests, request);
 				MarkerOptions marker = new MarkerOptions()
 				.title(request.skill.name)
 				.snippet(request.message)
-				.position(request.location);	
+				.position(request.location);
 				map.addMarker(marker);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
 			}
 		}
 		
+	}
+	
+	private void offsetIfNeeded(List<Request> allRequests, Request request) {
+		for (Request cur : allRequests) {
+			if (!cur.equals(request) &&
+					cur.location.latitude == request.location.latitude && 
+					cur.location.longitude == request.location.longitude) {
+				request.location = new LatLng(request.location.latitude + 0.00005,
+						request.location.longitude + 0.00005);
+				offsetIfNeeded(allRequests, request);
+			}
+		}
 	}
 	
 	private boolean hasSkill(List<Skill> skills, Skill skill) {
