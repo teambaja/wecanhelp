@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 
 public class IncidentMapActivity extends Activity {
@@ -33,7 +34,27 @@ public class IncidentMapActivity extends Activity {
 		GoogleMap map = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
 		map.setMyLocationEnabled(true);
+		List<Skill> initskills = AccountActivity.generateSkillsList();
+		ArrayList<Skill> skills = new ArrayList<Skill>();
+		for( int i = 0; i < initskills.size(); i++) {
+			if (initskills.get(i).isSelected(this)) {
+				skills.add(initskills.get(i));
+			}
+		}
+		List<Request> requests = LocalRequestStore.getRequests(this);
+		for(Request request : requests) {
+			if (hasSkill(skills,request.skill)) {
+				// add to map
+				MarkerOptions marker = new MarkerOptions()
+				.title(request.skill.name)
+				.snippet(request.message)
+				.position(request.location);	
+				map.addMarker(marker);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
+			}
+		}
 		
+		/*
 		List<Skill> skills = AccountActivity.generateSkillsList();
 		for( int i = 0; i < skills.size(); i++) {
 			if (skills.get(i).isSelected(this)) {
@@ -44,6 +65,16 @@ public class IncidentMapActivity extends Activity {
 				}
 			}
 		}
+		*/
+	}
+	
+	private boolean hasSkill(List<Skill> skills, Skill skill) {
+		for (Skill s : skills) {
+			if (s.name.equalsIgnoreCase(skill.name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//{"First Aid & CPR", "Transportation", "Doctor", "Shelter", "Water", "Food", "Plumber", "Electrician"};

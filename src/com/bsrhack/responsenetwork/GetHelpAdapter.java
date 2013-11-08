@@ -4,10 +4,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -15,6 +18,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -62,10 +67,10 @@ public class GetHelpAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					if (v instanceof Button) {
-						String category = ((Button)v).getText().toString();
-						//TODO: show the dialog with customization ability
+						final String category = ((Button)v).getText().toString();
 						AlertDialog.Builder builder = new AlertDialog.Builder(mContext.get());
 						View dialogView = inflater.inflate(R.layout.request_dialog, null);
+						final EditText editDesc = (EditText) dialogView.findViewById(R.id.message);
 						Dialog dialog = builder.setView(dialogView)
 								.setTitle(category)
 								.setPositiveButton("Send", new DialogInterface.OnClickListener() {
@@ -73,6 +78,17 @@ public class GetHelpAdapter extends BaseAdapter {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
 										Toast.makeText(mContext.get(), "Request sent", Toast.LENGTH_SHORT).show();
+										String description = editDesc.getText().toString();
+										// Take description + category + location and save locally
+										
+										String locationProvider = LocationManager.NETWORK_PROVIDER;
+										// String locationProvider = LocationManager.GPS_PROVIDER
+										LocationManager locationManager = (LocationManager) mContext.get().getSystemService(Context.LOCATION_SERVICE);
+										Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+										LatLng location = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+										
+										Request request = new Request(category, description, location);
+										LocalRequestStore.putRequest(mContext.get(), request);
 									}
 								})
 								.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
