@@ -6,6 +6,9 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 public class Skill {
+	
+	public static final String[] SKILLS_LIST = {"First Aid & CPR", "Transportation", "Doctor", "Shelter", "Water", "Food", "Plumber", "Electrician"};
+
 	public String name;
 	
 	public Skill(String name) {

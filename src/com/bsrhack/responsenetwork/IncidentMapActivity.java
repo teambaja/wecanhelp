@@ -54,18 +54,6 @@ public class IncidentMapActivity extends Activity {
 			}
 		}
 		
-		/*
-		List<Skill> skills = AccountActivity.generateSkillsList();
-		for( int i = 0; i < skills.size(); i++) {
-			if (skills.get(i).isSelected(this)) {
-				MarkerOptions marker = getMarkerForSkill(skills.get(i));
-				if (marker != null) {
-					map.addMarker(marker);
-					map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
-				}
-			}
-		}
-		*/
 	}
 	
 	private boolean hasSkill(List<Skill> skills, Skill skill) {
@@ -131,13 +119,6 @@ public class IncidentMapActivity extends Activity {
 		}
 
 		return marker;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.account, menu);
-		return true;
 	}
 
 }

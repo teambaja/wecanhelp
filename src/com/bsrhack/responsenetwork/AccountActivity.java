@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 public class AccountActivity extends Activity {
 
-	private static final String[] SKILLS_LIST = {"First Aid & CPR", "Transportation", "Doctor", "Shelter", "Water", "Food", "Plumber", "Electrician"};
 	private ListView mSkillsList;
 	private SkillsListAdapter mSkillsListAdapter;
 	private List<Skill> mSkills;
@@ -55,18 +54,20 @@ public class AccountActivity extends Activity {
     
     public static List<Skill> generateSkillsList() {
     	ArrayList<Skill> list = new ArrayList<Skill>();
-    	for( String name : SKILLS_LIST) {
+    	for( String name : Skill.SKILLS_LIST) {
     		Skill s = new Skill(name);
     		list.add(s);
     	}
     	return list;
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.account, menu);
         return true;
     }
+    */
     
 }
