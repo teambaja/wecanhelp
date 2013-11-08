@@ -42,6 +42,7 @@ public class IncidentMapActivity extends Activity {
 			}
 		}
 		List<Request> requests = LocalRequestStore.getRequests(this);
+		requests.addAll(getPreloads());
 		for(Request request : requests) {
 			if (hasSkill(skills,request.skill)) {
 				// add to map
@@ -78,60 +79,17 @@ public class IncidentMapActivity extends Activity {
 		return false;
 	}
 
-	//{"First Aid & CPR", "Transportation", "Doctor", "Shelter", "Water", "Food", "Plumber", "Electrician"};
-	private MarkerOptions getMarkerForSkill(Skill skill) {
-		MarkerOptions marker = null;
-		if ("First Aid & CPR".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7900, -122.4000);
-			marker = new MarkerOptions()
-			.title("First Aid")
-			.snippet("This person needs first aid!")
-			.position(help);
-		} else if ("Transportation".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7988, -122.3976);
-			marker = new MarkerOptions()
-			.title("Transportation")
-			.snippet("This person needs transportation.")
-			.position(help);
-		} else if ("Doctor".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7978, -122.4015);
-			marker = new MarkerOptions()
-			.title("Doctor")
-			.snippet("This person needs a doctor.")
-			.position(help);
-		} else if ("Shelter".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7938, -122.3989);
-			marker = new MarkerOptions()
-			.title("Shelter")
-			.snippet("This person needs shelter.")
-			.position(help);
-		} else if ("Water".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7960, -122.4007);
-			marker = new MarkerOptions()
-			.title("Water")
-			.snippet("This person needs water.")
-			.position(help);
-		} else if ("Food".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7896, -122.3900);
-			marker = new MarkerOptions()
-			.title("Food")
-			.snippet("This person needs food.")
-			.position(help);
-		} else if ("Plumber".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7921, -122.3938);
-			marker = new MarkerOptions()
-			.title("Plumber")
-			.snippet("This person needs a plumber.")
-			.position(help);
-		} else if ("Electrician".equalsIgnoreCase(skill.name)) {
-			LatLng help = new LatLng(37.7945, -122.3954);
-			marker = new MarkerOptions()
-			.title("Electrician")
-			.snippet("This person needs an electrician.")
-			.position(help);
-		}
-
-		return marker;
+	private List<Request> getPreloads() {
+		List<Request> preloads = new ArrayList<Request>();
+		preloads.add(new Request("First Aid & CPR", "My grandma has fallen and is hurt", new LatLng(37.7900, -122.4000)));
+		preloads.add(new Request("Transportation", "need truck to take food & water to disaster shelter", new LatLng(37.7988, -122.3976)));
+		preloads.add(new Request("Doctor", "Need a doctor over here!\nPlease help", new LatLng(37.7978, -122.4015)));
+		preloads.add(new Request("Shelter", "Our home was knocked down in the earthquake\nwe need a place to stay tonight", new LatLng(37.7938, -122.3989)));
+		preloads.add(new Request("Water", "3 people, out of water", new LatLng(37.7960, -122.4007)));
+		preloads.add(new Request("Plumber", "drains are backing up", new LatLng(37.7921, -122.3938)));
+		preloads.add(new Request("Food", "ran out of food, can grill whatever you bring", new LatLng(37.7896, -122.3900)));
+		preloads.add(new Request("Electrician", "power was knocked out at our home", new LatLng(37.7945, -122.3954)));
+		return preloads;
 	}
 
 }
